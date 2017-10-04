@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<title>GifTastic Game of Thrones</title>
+
+	<!---Bootsrtap Link-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+</head>
+
+<body>
+	<!--Container-->
+	<div class = "container">
+		<!--Row-->
+		<div class = "row">
+
+			<!--Column 1: Buttons and Gifs-->
+			<div class="col-6">
+			  <button data-gameOfThrones="topics"></button>
+		
+		  	  <div id="gifs-appear-here"></div>
+			</div>
+
+			<!--Column 2: Input Box-->
+			<div class="col-6">
+			  <form> Add Character: <input type="text" name="newCharacter"></form>
+			</div>
+	    </div>
+	</div>	
+
+	<!--Javascript/jQuery Link-->  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+  	var topics = ["Jon Snow","Daenerys Targaryen", "Gendry", "Cersei Lannister","Tyrion Lannister","Sansa Stark","Arya Stark"]
+  	for (var i = 0; i < topics.length; i++) {
+  		console.log(topics);
+
+            var userEntry = topics;
+
+
+             $("button").html(userEntry);
+
+   //          var topicDiv = $("<div>");
+
+            
+   //          var button = $("<button>").html(topics);
+
+            
+   //          topicDiv.append(button);
+
+           
+
+  	// }
+
+
+    $("button").on("click", function() {
+
+      var topics = $(this).attr("data-gameOfThrones");
+
+   
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        topics + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+
+        .done(function(response) {
+          console.log(queryURL);
+
+          console.log(response);
+
+          var results = response.data;
+
+          for (var i = 0; i < results.length; i++) {
+
+            var characterDiv = $("<div>");
+
+         
+            var p = $("<p>").text("Rating: " + results[i].rating);
+
+            var characterImage = $("<img>");
+
+            characterImage.attr("src", results[i].images.fixed_height.url);
+
+            characterDiv.append(p);
+            characterDiv.append(characterImage);
+
+           
+            $("#gifs-appear-here").prepend(characterDiv);
+          }
+      });
+        });
+    };
+  </script>
+</body>
+
+</html>
